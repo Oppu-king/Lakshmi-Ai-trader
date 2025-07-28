@@ -1,8 +1,7 @@
-from flask import Flask
-import os
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+import random, csv, os, requests
 from dotenv import load_dotenv
-
-load_dotenv()
+from pathlib import Path
 
 app = Flask(__name__)
 app.secret_key = "lakshmi_secret_key"
