@@ -126,7 +126,7 @@ def add_strategy():
     data = [
         request.form["name"],
         float(request.form["entry"]),
-        float(request.form]),
+        float(request.form["sl"]),       
         float(request.form["target"]),
         request.form["note"],
         datetime.now().strftime("%Y-%m-%d %H:%M:%S")
