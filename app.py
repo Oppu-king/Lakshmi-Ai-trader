@@ -48,7 +48,7 @@ def save_user(username, password):
 # --- Routes ---
 @app.route("/")
 def home():
-    return "<h1>💖 Lakshmi — Your AI Wife is Live 💖</h1>"
+    return redirect("/login")
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
