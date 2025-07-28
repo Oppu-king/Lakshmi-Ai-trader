@@ -1,0 +1,117 @@
+<!-- templates/option_chain.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>📈 Option Chain Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #fff5f8, #e6f7ff);
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #d6006b;
+      margin-bottom: 20px;
+    }
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .controls input, .controls select {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #ffb3d9;
+    }
+    .highlight {
+      background-color: #ffd6e7;
+      font-weight: bold;
+    }
+    button {
+      background: #ff4d88;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #cc0066;
+    }
+    @media(max-width: 600px) {
+      .controls {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>📈 Option Chain Viewer</h2>
+
+    <form method="GET">
+      <div class="controls">
+        <input type="number" name="strike_filter" placeholder="Filter by Strike (e.g. 44500)" value="{{ strike_filter or '' }}"/>
+        <select name="expiry">
+          <option value="">Select Expiry</option>
+          <option value="18-July-2025" {% if expiry == '18-July-2025' %}selected{% endif %}>18 July 2025</option>
+          <option value="25-July-2025" {% if expiry == '25-July-2025' %}selected{% endif %}>25 July 2025</option>
+        </select>
+        <button type="submit">🔍 Filter</button>
+        <a href="/dashboard"><button type="button">🏠 Dashboard</button></a>
+      </div>
+    </form>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Strike</th>
+          <th>Call OI</th>
+          <th>Call Change</th>
+          <th>Put OI</th>
+          <th>Put Change</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in option_data %}
+        <tr class="{% if row.max_oi %}highlight{% endif %}">
+          <td>{{ row.strike }}</td>
+          <td>{{ row.call_oi }}</td>
+          <td>{{ row.call_change }}</td>
+          <td>{{ row.put_oi }}</td>
+          <td>{{ row.put_change }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+  </html

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>📈 Strategy Analyzer</title>
+  <link rel="stylesheet" href="/static/style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #eaf6ff, #ffe6f7);
+      color: #333;
+    }
+    header {
+      background: #4a90e2;
+      padding: 1rem;
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .container {
+      max-width: 800px;
+      margin: 30px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #ff3399;
+    }
+    textarea {
+      width: 100%;
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      resize: vertical;
+    }
+    button {
+      background: #ff3399;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 15px;
+    }
+    button:hover {
+      background: #cc0066;
+    }
+    .result {
+      margin-top: 20px;
+      background: #f0f8ff;
+      padding: 15px;
+      border-left: 6px solid #ff3399;
+      border-radius: 12px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <header>📈 Strategy Analyzer</header>
+
+  <div class="container">
+    <h2>Paste Strategy Text or Pattern</h2>
+    <form method="post">
+      <textarea name="strategy_text" rows="6" placeholder="Example:\nMACD cross above signal line...\nRSI is above 70..." required>{{ request.form.get('strategy_text', '') }}</textarea>
+      <button type="submit">🔍 Analyze</button>
+    </form>
+
+    {% if signal %}
+    <div class="result">
+      <strong>💡 Signal:</strong> {{ signal }}
+    </div>
+    {% endif %}
+  </div>
+</body>
+</html

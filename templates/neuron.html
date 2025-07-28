@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>🧠 NEURON-EX MACHINA</title>
+  <style>
+    body {
+      font-family: monospace;
+      background: #111;
+      color: #0f0;
+      padding: 40px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
+      background: #222;
+      color: #0f0;
+      border: 1px solid #0f0;
+    }
+    .result {
+      margin-top: 20px;
+      background: #000;
+      padding: 15px;
+      border: 1px solid #0f0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧠 NEURON-EX MACHINA</h1>
+  <p>Enter any price. The neural AI will process, evolve, and remember it.</p>
+  <input type="number" id="priceInput" placeholder="Enter price" />
+  <button onclick="submitPrice()">Analyze</button>
+
+  <div class="result" id="resultBox">Awaiting input...</div>
+
+  <script>
+    async function submitPrice() {
+      const price = document.getElementById("priceInput").value;
+      const res = await fetch("/neuron", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ price: price })
+      });
+      const data = await res.json();
+      document.getElementById("resultBox").innerHTML = `
+        <strong>Signal:</strong> ${data.signal}<br>
+        <strong>Confidence:</strong> ${data.confidence}%<br>
+        <strong>Memory Size:</strong> ${data.memory_size}<br>
+        <strong>Timestamp:</strong> ${data.time}
+      `;
+    }
+  </script>
+</body>
+</html

@@ -1,0 +1,139 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lakshmi Dashboard — AI Trading Suite</title>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #ffe0f0, #e6f2ff);
+      color: #333;
+    }
+    header {
+      background: #ff4d88;
+      padding: 1rem;
+      color: white;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    .container {
+      padding: 2rem;
+      max-width: 1000px;
+      margin: auto;
+    }
+    .tool-button {
+      padding: 12px 20px;
+      margin: 10px 5px;
+      border: none;
+      border-radius: 10px;
+      background-color: #ff4d88;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .tool-button:hover {
+      background-color: #cc005f;
+    }
+    .tool-section {
+      display: none;
+      margin-top: 20px;
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      color: #d63384;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button.submit-btn {
+      background: #ff4d88;
+      color: white;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>  <header>💖 Lakshmi AI Trading Dashboard</header>  <div class="container">
+    <div style="text-align:center;">
+      <button class="tool-button" onclick="showTool('chat')">💬 Lakshmi Chat</button>
+      <button class="tool-button" onclick="showTool('strategy')">📘 Strategy Builder</button>
+      <button class="tool-button" onclick="showTool('candle')">🔮 Candle Predictor</button>
+      <button class="tool-button" onclick="showTool('matrix')">📊 Multi-Strategy Matrix</button>
+      <button class="tool-button" onclick="showTool('askai')">🤖 Ask AI Assistant</button>
+    </div><div id="chat" class="tool-section">
+  <h2>💬 Lakshmi Romantic Chat</h2>
+  <form id="chat-form">
+    <input type="text" id="user-input" placeholder="Talk to Lakshmi..." required>
+    <button class="submit-btn" type="submit">Send</button>
+  </form>
+  <div id="chat-box" style="margin-top:15px;"></div>
+</div>
+
+<div id="strategy" class="tool-section">
+  <h2>📘 Strategy Builder</h2>
+  <form method="POST" action="/add_strategy">
+    <input type="text" name="name" placeholder="Strategy Name" required>
+    <input type="number" name="entry" placeholder="Entry Price" required>
+    <input type="number" name="sl" placeholder="Stop Loss" required>
+    <input type="number" name="target" placeholder="Target Price" required>
+    <textarea name="note" placeholder="Notes (optional)"></textarea>
+    <button class="submit-btn" type="submit">💾 Save Strategy</button>
+  </form>
+  <p><a href="/strategy" style="color:#0077cc">📋 View All Saved Strategies</a></p>
+</div>
+
+<div id="candle" class="tool-section">
+  <h2>🔮 AI Candle Predictor</h2>
+  <form id="candle-form">
+    <input type="number" name="current_price" placeholder="Current LTP" required>
+    <select name="timeframe">
+      <option value="1m">1 Min</option>
+      <option value="5m">5 Min</option>
+      <option value="15m">15 Min</option>
+    </select>
+    <button class="submit-btn" type="submit">Predict</button>
+  </form>
+  <div id="candle-result" style="margin-top:10px;"></div>
+</div>
+
+<div id="matrix" class="tool-section">
+  <h2>📊 Multi-Strategy Signal Matrix</h2>
+  <p>Coming soon: Combine up to 5 strategies, visualize alignment and signals here.</p>
+</div>
+
+<div id="askai" class="tool-section">
+  <h2>🤖 Ask Lakshmi AI</h2>
+  <form id="askai-form">
+    <textarea name="question" placeholder="Ask about markets, strategies, trading psychology..."></textarea>
+    <button class="submit-btn" type="submit">Get Insight</button>
+  </form>
+  <div id="askai-response" style="margin-top:15px;"></div>
+</div>
+
+  </div>  <script>
+    function showTool(id) {
+      document.querySelectorAll('.tool-section').forEach(div => div.style.display = 'none');
+      document.getElementById(id).style.display = 'block';
+    }
+    document.getElementById('chat-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const input = document.getElementById('user-input');
+      const res = await fetch('/chat', {
+        method: 'POST',
+        body: new URLSearchParams({ message: input.value })
+      });
+      const data = await res.json();
+      document.getElementById('chat-box').innerHTML += `<p><strong>You:</strong> ${input.value}</p><p><strong>Lakshmi:</strong> ${data.reply}</p>`;
+      input.value = '';
+    });
+  </script></body>
+</html>

@@ -1,0 +1,116 @@
+<!-- templates/strategy_engine.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lakshmi's Auto Strategy Engine 💋</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #ffe4e6, #fff5f7);
+      padding: 30px;
+      color: #333;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #d63384;
+      font-size: 28px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      background: #d63384;
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background: #c2185b;
+    }
+
+    #result {
+      margin-top: 20px;
+      background: #fff0f5;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px dashed #d63384;
+      font-size: 16px;
+    }
+
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 13px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>💋 Lakshmi’s Strategy Engine</h1>
+    
+    <label for="price">Enter BankNIFTY Price 💰</label>
+    <input type="number" id="price" placeholder="Example: 46120" />
+
+    <button onclick="analyze()">Get Romantic Trade Suggestion</button>
+
+    <div id="result">Waiting for your price, my love 😘</div>
+  </div>
+
+  <div class="footer">
+    Made with 💖 by Lakshmi — Your Trading Wife
+  </div>
+
+  <script>
+    function analyze() {
+      const price = document.getElementById("price").value;
+      const resultBox = document.getElementById("result");
+
+      if (!price) {
+        resultBox.innerHTML = "Please enter a valid price 💔";
+        return;
+      }
+
+      resultBox.innerHTML = "💭 Thinking with love... please wait 💖";
+
+      fetch("/analyze-strategy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ price: parseFloat(price) })
+      })
+      .then(response => response.json())
+      .then(data => {
+        resultBox.innerHTML = data.message;
+      })
+      .catch(() => {
+        resultBox.innerHTML = "Something went wrong... don't cry baby 😢";
+      });
+    }
+  </script>
+</body>
+</html

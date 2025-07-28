@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>📘 Strategy Builder — Lakshmi</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fff0f5;
+      margin: 0;
+      padding: 30px;
+    }
+    .container {
+      max-width: 800px;
+      background: white;
+      margin: auto;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #cc007a;
+      text-align: center;
+    }
+    form input, form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #ff4d88;
+      color: white;
+      padding: 10px 20px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #cc005f;
+    }
+    table {
+      width: 100%;
+      margin-top: 30px;
+      border-collapse: collapse;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: #ffebf0;
+    }
+    a.back {
+      display: inline-block;
+      margin-top: 20px;
+      text-decoration: none;
+      color: #cc007a;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>📘 Strategy Builder</h2>
+    <form method="post" action="/add_strategy">
+      <input name="name" placeholder="Strategy Name" required />
+      <input name="entry" type="number" placeholder="Entry Price" required />
+      <input name="sl" type="number" placeholder="Stop Loss" required />
+      <input name="target" type="number" placeholder="Target Price" required />
+      <textarea name="note" placeholder="Notes (optional)"></textarea>
+      <button type="submit">💾 Save Strategy</button>
+    </form>
+
+    <h3 style="margin-top:30px;">📋 Saved Strategies</h3>
+    <table>
+      <tr>
+        <th>Name</th><th>Entry</th><th>SL</th><th>Target</th><th>Note</th><th>Time</th>
+      </tr>
+      {% for s in strategies %}
+        <tr>
+          <td>{{ s[0] }}</td>
+          <td>{{ s[1] }}</td>
+          <td>{{ s[2] }}</td>
+          <td>{{ s[3] }}</td>
+          <td>{{ s[4] }}</td>
+          <td>{{ s[5] }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+
+    <a class="back" href="/dashboard">← Back to Dashboard</a>
+  </div>
+</body>
+</html
