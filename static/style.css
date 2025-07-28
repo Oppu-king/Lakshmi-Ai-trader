@@ -1,0 +1,307 @@
+/* 🌈 Background only for auth pages */
+.auth-body {
+  font-family: 'Segoe UI', sans-serif;
+  background: radial-gradient(circle at top left, #ffe6f0, #e6faff);
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* 💖 Auth Container */
+.auth-container {
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(15px);
+  padding: 40px 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(255, 105, 180, 0.2);
+  width: 90%;
+  max-width: 480px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: fadeIn 1s ease-in-out;
+}
+.large-login-box {
+  max-width: 480px;
+}
+
+.auth-header {
+  margin-bottom: 20px;
+}
+.auth-icon {
+  font-size: 2rem;
+  color: #6a1b9a;
+  background: #fff;
+  border-radius: 50%;
+  padding: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+}
+.auth-container h2 {
+  font-size: 1.4rem;
+  color: #222;
+  margin: 0 0 8px;
+}
+.auth-sub {
+  font-size: 0.95rem;
+  color: #555;
+  margin-top: 4px;
+}
+
+/* 🌸 Inputs */
+.auth-input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+  font-size: 1rem;
+  transition: border-color 0.3s, background 0.3s;
+}
+.auth-input:focus {
+  border-color: #007acc;
+  outline: none;
+  background: #fff;
+}
+
+/* 👁️ Password visibility toggle */
+.password-wrapper {
+  position: relative;
+}
+.password-wrapper .auth-input {
+  padding-right: 45px;
+  box-sizing: border-box;
+}
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #555;
+  font-size: 18px;
+  transition: color 0.3s;
+}
+.toggle-password:hover {
+  color: #007acc;
+}
+
+/* 💕 Submit Button */
+.auth-button {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(to right, #007acc, #005fa3);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.auth-button:hover {
+  background: #004080;
+}
+
+/* ✅ Divider */
+.divider {
+  margin: 18px 0;
+  text-align: center;
+  font-size: 0.85rem;
+  color: #999;
+  position: relative;
+}
+.divider::before,
+.divider::after {
+  content: '';
+  height: 1px;
+  background: #ddd;
+  position: absolute;
+  top: 50%;
+  width: 40%;
+}
+.divider::before {
+  left: 0;
+}
+.divider::after {
+  right: 0;
+}
+
+/* 🧠 Google Button */
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  background: #fff;
+  transition: background 0.3s;
+}
+.google-btn img {
+  height: 20px;
+}
+.google-btn:hover {
+  background: #f8f8f8;
+}
+
+/* 🔐 Remember and Forgot Row */
+.auth-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  margin: -4px 0 18px;
+  color: #444;
+}
+.forgot-link {
+  color: #007acc;
+  text-decoration: none;
+}
+.forgot-link:hover {
+  text-decoration: underline;
+}
+
+/* 🔗 Auth Link Below Form */
+.auth-link {
+  margin-top: 18px;
+  font-size: 0.95rem;
+  color: #333;
+}
+.auth-link a {
+  color: #0066cc;
+  text-decoration: none;
+  font-weight: 500;
+}
+.auth-link a:hover {
+  text-decoration: underline;
+}
+
+/* ❌ Error Message */
+.auth-error {
+  color: red;
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+
+/* ✨ Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 📱 Responsive */
+@media (max-width: 480px) {
+  .auth-container {
+    padding: 30px 20px;
+  }
+  .auth-container h2 {
+    font-size: 1.2rem;
+  }
+}
+
+/* 📦 Glow Border for Auth Container */
+.glow-border {
+  border: 1px solid rgba(0, 128, 255, 0.3);
+  box-shadow: 0 0 12px rgba(0, 128, 255, 0.15);
+}
+
+/* 🧠 Lakshmi Chat Box (Larger) */
+#chat-box {
+  background: #fef0f5;
+  border: 2px solid #ff99cc;
+  border-radius: 10px;
+  padding: 20px;
+  height: 420px;
+  overflow-y: auto;
+  font-size: 16px;
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+/* 📈 Dashboard Preview */
+.dashboard-preview {
+  margin-top: 35px;
+  text-align: center;
+  color: #222;
+}
+.dashboard-preview h3 {
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  color: #660033;
+}
+.preview-grid {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+.preview-card {
+  background: #ffffffcc;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 180px;
+  text-align: left;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.preview-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+.preview-card h4 {
+  font-size: 1rem;
+  margin: 0 0 5px;
+  color: #004d66;
+}
+.preview-card p {
+  font-size: 0.85rem;
+  color: #555;
+}
+
+/* 🌟 Signup Page Additions */
+
+/* Style the gender select input */
+.auth-input select,
+select.auth-input {
+  appearance: none;
+  -webkit-appearance: none;
+  background: #f9f9f9 url("data:image/svg+xml,%3Csvg viewBox='0 0 140 140' width='14' height='14' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23666' d='M70 90L40 50h60z'/%3E%3C/svg%3E") no-repeat right 12px center;
+  background-size: 12px;
+  padding-right: 36px;
+  color: #555;
+}
+
+/* Style for checkbox agreement */
+.auth-checkbox {
+  font-size: 0.9rem;
+  text-align: left;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: #444;
+}
+
+.auth-checkbox input[type="checkbox"] {
+  margin-top: 4px;
+  accent-color: #007acc;
+}
+
+/* Match date input to your other fields */
+input[type="date"].auth-input {
+  color: #555;
