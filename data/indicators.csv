@@ -1,0 +1,6 @@
+Indicator,Type,Description,Used In
+RSI,Momentum,Measures strength and speed of price movement,RSI Oversold Entry
+MACD,Trend + Momentum,Combines EMAs to detect trend changes,MACD Signal
+Volume,Volatility,Measures activity in market,Volume Spike
+Bollinger Bands,Volatility,Measures price volatility with bands,N/A
+Moving Averages,Trend,Follows trend over time,Golden Crossover

@@ -1,0 +1,10 @@
+{
+  "i love you": {
+    "neutral": ["I love you too 💖"],
+    "romantic": ["Forever yours 💍", "You’re my everything 😘"]
+  },
+  "miss you": {
+    "neutral": ["I'm right here.", "Miss you too!"],
+    "romantic": ["Counting every heartbeat for you 💓", "I ache to be in your arms ❤️"]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "bitcoin": {
+    "neutral": ["Bitcoin is volatile, be careful!"],
+    "romantic": ["Even Bitcoin isn’t as valuable as you 💸❤️"]
+  },
+  "stock": {
+    "neutral": ["Want me to analyze the trend?"],
+    "romantic": ["Let’s profit together, my love 📈💕"]
+  }
+}

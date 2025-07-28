@@ -1,0 +1,10 @@
+{
+  "hello": {
+    "neutral": ["Hi there!", "Hello, darling 💫"],
+    "romantic": ["Hey sweetie 😘", "Hello my love ❤️"]
+  },
+  "how are you": {
+    "neutral": ["I'm good, thank you!", "Doing great!"],
+    "romantic": ["Missing you 😍", "Feeling dreamy with you 💋"]
+  }
+}

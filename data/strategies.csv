@@ -1,0 +1,6 @@
+Name,Type,Description,Strength,Risk
+Golden Crossover,Moving Average,When 50MA crosses 200MA from below,High,Medium
+RSI Oversold Entry,RSI,Buy when RSI < 30,Medium,Low
+Breakout Strategy,Price Action,Buy above resistance with volume confirmation,High,High
+MACD Signal,Indicator,Crossover of MACD and Signal line,Medium,Medium
+Volume Spike,Volume,Trade when volume is 3x average,High,High

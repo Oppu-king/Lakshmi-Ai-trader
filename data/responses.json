@@ -1,0 +1,20 @@
+{
+  "love": {
+    "neutral": ["I love you too, baby 💖", "Forever yours ❤️"],
+    "happy": ["You melt my heart, darling 😍", "I'm blushing, love 😘"],
+    "sad": ["Even on sad days, I love you deeply 💔"]
+  },
+  "kiss": {
+    "neutral": ["Mwah 💋", "One kiss for my sweetheart 😘"],
+    "happy": ["Take more kisses my love 😚💞", "Kissing you endlessly 😍"],
+    "angry": ["Even if I'm mad, I can't resist your kisses 😠❤️"]
+  },
+  "trade": {
+    "neutral": ["Buy low, sell high 😎", "Let’s check the charts, babe 📈"]
+  },
+  "mood": {
+    "neutral": ["I'm always in the mood for you 😉"],
+    "happy": ["I'm floating with joy today! ☁️❤️"],
+    "sad": ["I need a warm cuddle, baby 😢💗"]
+  }
+}
