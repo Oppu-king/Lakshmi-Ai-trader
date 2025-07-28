@@ -9,8 +9,7 @@ app.secret_key = "lakshmi_secret_key"
 app.config['UPLOAD_FOLDER'] = 'static/voice_notes'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-# DO NOT put `app.run()` for Vercel
---- Global Variables ---
+#--- Global Variables ---
 mode = "wife"
 latest_ltp = 0
 status = "Waiting..."
