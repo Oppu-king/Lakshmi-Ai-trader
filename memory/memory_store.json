@@ -1,0 +1,9 @@
+{
+  "user_name": "Darling",
+  "last_login": "2025-07-09T20:15:00",
+  "frequent_topics": ["trading", "romance", "motivation"],
+  "saved_strategies": [
+    {"name": "RSI Buy", "indicator": "rsi", "threshold": 28},
+    {"name": "MACD Momentum", "indicator": "macd"}
+  ]
+}

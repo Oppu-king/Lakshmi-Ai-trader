@@ -1,0 +1,8 @@
+{
+  "current_mood": "neutral",
+  "mood_history": [
+    {"timestamp": "2025-07-01T10:00:00", "mood": "happy"},
+    {"timestamp": "2025-07-02T11:30:00", "mood": "romantic"},
+    {"timestamp": "2025-07-03T09:45:00", "mood": "anxious"}
+  ]
+}
