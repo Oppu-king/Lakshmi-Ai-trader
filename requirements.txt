@@ -1,0 +1,11 @@
+Flask==2.3.2
+gunicorn==21.2.0
+numpy==1.26.4
+pandas==2.2.2
+nltk==3.8.1
+requests
+openai
+yfinance
+beautifulsoup4
+matplotlib
+python-dotenv
