@@ -527,6 +527,7 @@ def analyze_with_neuron(price):
         }
 
 # --- Start App ---
- import os
+import os
 
 api_key = os.environ.get("OPENROUTER_API_KEY")
+ 
