@@ -2,11 +2,25 @@ from flask import Flask, render_template, request, redirect, url_for, session, j
 import random, csv, os, requests
 from dotenv import load_dotenv
 from pathlib import Path
+from flask_cors import CORS
+import yfinance as yf
+import requests
+import pandas as pd
+import numpy as np
+from datetime import datetime, timedelta
+import logging
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 app.secret_key = "lakshmi_secret_key"
 app.config['UPLOAD_FOLDER'] = 'static/voice_notes'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 
 #--- Global Variables ---
 mode = "wife"
@@ -525,8 +539,283 @@ def analyze_with_neuron(price):
             "target": 0
         }
 
-# --- Start App ---
-import os
 
-api_key = os.environ.get("OPENROUTER_API_KEY")
+@app.route('/health', methods=['GET'])
+def health_check():
+    """Health check endpoint"""
+    return jsonify({
+        'status': 'healthy',
+        'timestamp': datetime.now().isoformat(),
+        'message': 'Trading Platform Backend is running'
+    })
+
+@app.route('/market-data', methods=['POST'])
+def get_market_data():
+    """Fetch market data for a given symbol"""
+    try:
+        data = request.get_json()
+        symbol = data.get('symbol', '^NSEI')
+        period = data.get('period', '60')  # days
+        interval = data.get('interval', '1d')
+        
+        logger.info(f"Fetching market data for {symbol}, period: {period}d, interval: {interval}")
+        
+        # Calculate period string for yfinance
+        if interval == '1d':
+            period_str = f"{period}d"
+        elif interval == '1h':
+            period_str = f"{min(int(period), 30)}d"  # Max 30 days for hourly
+        else:
+            period_str = f"{min(int(period), 7)}d"   # Max 7 days for minute data
+        
+        # Fetch data using yfinance
+        ticker = yf.Ticker(symbol)
+        hist = ticker.history(period=period_str, interval=interval)
+        
+        if hist.empty:
+            return jsonify({'error': 'No data found for symbol'}), 404
+        
+        # Convert to the format expected by frontend
+        result = {
+            'symbol': symbol,
+            'timestamps': [int(ts.timestamp()) for ts in hist.index],
+            'open': hist['Open'].tolist(),
+            'high': hist['High'].tolist(),
+            'low': hist['Low'].tolist(),
+            'close': hist['Close'].tolist(),
+            'volume': hist['Volume'].tolist()
+        }
+        
+        logger.info(f"Successfully fetched {len(result['timestamps'])} data points for {symbol}")
+        return jsonify(result)
+        
+    except Exception as e:
+        logger.error(f"Error fetching market data: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/global-data', methods=['GET'])
+def get_global_data():
+    """Fetch global market data"""
+    try:
+        global_data = {}
+        
+        # Fetch VIX
+        try:
+            vix_ticker = yf.Ticker('^INDIAVIX')
+            vix_data = vix_ticker.history(period='1d')
+            if not vix_data.empty:
+                global_data['vix'] = round(vix_data['Close'].iloc[-1], 2)
+        except:
+            global_data['vix'] = '--'
+        
+        # Fetch USD/INR
+        try:
+            usdinr_ticker = yf.Ticker('USDINR=X')
+            usdinr_data = usdinr_ticker.history(period='1d')
+            if not usdinr_data.empty:
+                global_data['usdinr'] = round(usdinr_data['Close'].iloc[-1], 2)
+        except:
+            global_data['usdinr'] = '--'
+        
+        # Fetch Dow Futures
+        try:
+            dow_ticker = yf.Ticker('YM=F')
+            dow_data = dow_ticker.history(period='2d')
+            if len(dow_data) >= 2:
+                change = dow_data['Close'].iloc[-1] - dow_data['Close'].iloc[-2]
+                global_data['dow_futures'] = f"{'+' if change > 0 else ''}{int(change)}"
+            else:
+                global_data['dow_futures'] = '--'
+        except:
+            global_data['dow_futures'] = '--'
+        
+        # Mock FII/DII data (replace with real API when available)
+        global_data['fii_flow'] = np.random.randint(-5000, 5000)
+        global_data['dii_flow'] = np.random.randint(-3000, 3000)
+        
+        logger.info("Successfully fetched global market data")
+        return jsonify(global_data)
+        
+    except Exception as e:
+        logger.error(f"Error fetching global data: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/options-data', methods=['POST'])
+def get_options_data():
+    """Fetch options data for a given symbol"""
+    try:
+        data = request.get_json()
+        symbol = data.get('symbol', '^NSEI')
+        
+        # Mock options data (replace with real options chain API)
+        options_data = {
+            'pcr': round(np.random.uniform(0.5, 1.5), 2),
+            'max_pain': int(np.random.uniform(17000, 19000)) if 'NSEI' in symbol else int(np.random.uniform(40000, 45000)),
+            'oi_change': np.random.randint(-20, 20)
+        }
+        
+        logger.info(f"Generated options data for {symbol}")
+        return jsonify(options_data)
+        
+    except Exception as e:
+        logger.error(f"Error fetching options data: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/ai-analysis', methods=['POST'])
+def get_ai_analysis():
+    """Get AI analysis using OpenRouter API"""
+    try:
+        data = request.get_json()
+        market_data = data.get('market_data')
+        strategies = data.get('strategies')
+        api_key = data.get('api_key')
+        
+        if not api_key:
+            return jsonify({'error': 'API key required'}), 400
+        
+        # Prepare prompt for AI analysis
+        prompt = f"""
+        Analyze this market data and provide insights:
+        
+        Symbol: {market_data.get('symbol')}
+        Current Price: {market_data.get('current_price')}
+        Volume: {market_data.get('volume')}
+        
+        Technical Indicators Summary:
+        {strategies}
+        
+        Provide a brief market regime classification (Trending/Choppy/Volatile) and key insights in 2-3 sentences.
+        """
+        
+        # Make request to OpenRouter API
+        headers = {
+            'Authorization': f'Bearer {api_key}',
+            'Content-Type': 'application/json'
+        }
+        
+        payload = {
+            'model': 'deepseek/deepseek-chat',
+            'messages': [{'role': 'user', 'content': prompt}],
+            'max_tokens': 200
+        }
+        
+        response = requests.post('https://openrouter.ai/api/v1/chat/completions', 
+                               headers=headers, json=payload, timeout=30)
+        
+        if response.status_code == 200:
+            result = response.json()
+            analysis = result['choices'][0]['message']['content']
+            return jsonify({'analysis': analysis})
+        else:
+            return jsonify({'error': 'AI API request failed'}), 500
+            
+    except Exception as e:
+        logger.error(f"Error in AI analysis: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/backtest', methods=['POST'])
+def run_backtest():
+    """Run backtest for selected strategies"""
+    try:
+        data = request.get_json()
+        symbol = data.get('symbol')
+        strategies = data.get('strategies', [])
+        period = data.get('period', 365)
+        
+        # Fetch historical data
+        ticker = yf.Ticker(symbol)
+        hist = ticker.history(period=f"{period}d")
+        
+        if hist.empty:
+            return jsonify({'error': 'No historical data available'}), 404
+        
+        # Simple backtest simulation
+        returns = hist['Close'].pct_change().dropna()
+        
+        # Calculate basic metrics
+        total_return = (hist['Close'].iloc[-1] / hist['Close'].iloc[0] - 1) * 100
+        volatility = returns.std() * np.sqrt(252) * 100
+        sharpe_ratio = (returns.mean() / returns.std()) * np.sqrt(252) if returns.std() > 0 else 0
+        max_drawdown = ((hist['Close'] / hist['Close'].cummax()) - 1).min() * 100
+        
+        backtest_results = {
+            'total_return': round(total_return, 2),
+            'volatility': round(volatility, 2),
+            'sharpe_ratio': round(sharpe_ratio, 2),
+            'max_drawdown': round(max_drawdown, 2),
+            'win_rate': round(np.random.uniform(45, 65), 1),  # Mock win rate
+            'profit_factor': round(np.random.uniform(1.1, 2.5), 2)  # Mock profit factor
+        }
+        
+        logger.info(f"Backtest completed for {symbol}")
+        return jsonify(backtest_results)
+        
+    except Exception as e:
+        logger.error(f"Error in backtest: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/risk-metrics', methods=['POST'])
+def calculate_risk_metrics():
+    """Calculate detailed risk metrics"""
+    try:
+        data = request.get_json()
+        symbol = data.get('symbol')
+        position_size = data.get('position_size', 2)
+        stop_loss = data.get('stop_loss', 2)
+        take_profit = data.get('take_profit', 4)
+        
+        # Fetch recent data for volatility calculation
+        ticker = yf.Ticker(symbol)
+        hist = ticker.history(period='30d')
+        
+        if hist.empty:
+            return jsonify({'error': 'No data available for risk calculation'}), 404
+        
+        returns = hist['Close'].pct_change().dropna()
+        current_price = hist['Close'].iloc[-1]
+        
+        # Calculate risk metrics
+        daily_volatility = returns.std()
+        var_95 = returns.quantile(0.05) * 100  # 95% VaR
+        expected_shortfall = returns[returns <= returns.quantile(0.05)].mean() * 100
+        
+        risk_metrics = {
+            'current_price': round(current_price, 2),
+            'daily_volatility': round(daily_volatility * 100, 2),
+            'var_95': round(var_95, 2),
+            'expected_shortfall': round(expected_shortfall, 2),
+            'position_risk': round((position_size * stop_loss) / 100, 2),
+            'risk_reward_ratio': round(take_profit / stop_loss, 2),
+            'kelly_criterion': round(np.random.uniform(0.1, 0.3), 3)  # Mock Kelly %
+        }
+        
+        logger.info(f"Risk metrics calculated for {symbol}")
+        return jsonify(risk_metrics)
+        
+    except Exception as e:
+        logger.error(f"Error calculating risk metrics: {str(e)}")
+        return jsonify({'error': str(e)}), 500
+
+@app.errorhandler(404)
+def not_found(error):
+    return jsonify({'error': 'Endpoint not found'}), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    return jsonify({'error': 'Internal server error'}), 500
+
+if __name__ == '__main__':
+    print("🚀 Starting Trading Platform Backend...")
+    print("📊 Available endpoints:")
+    print("   - GET  /health")
+    print("   - POST /market-data")
+    print("   - GET  /global-data") 
+    print("   - POST /options-data")
+    print("   - POST /ai-analysis")
+    print("   - POST /backtest")
+    print("   - POST /risk-metrics")
+    print("\n🔥 Backend running on http://localhost:5000")
+    
+    app.run(debug=True, host='0.0.0.0', port=5000)
+
  
